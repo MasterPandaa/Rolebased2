@@ -8,6 +8,7 @@
 
 Author: Cascade (Senior Python Game Developer)
 """
+
 from __future__ import annotations
 
 import math
@@ -17,7 +18,6 @@ from dataclasses import dataclass
 from typing import Tuple
 
 import pygame
-
 
 # -----------------------------
 # Configuration and constants
@@ -177,7 +177,9 @@ class AIPaddleController:
             else:
                 # When ball is moving away, drift target back to center with some noise
                 noise = random.gauss(0.0, 25.0)
-                self.target_center_y = (1 - self.center_bias) * self.target_center_y + self.center_bias * (HEIGHT / 2 + noise)
+                self.target_center_y = (
+                    1 - self.center_bias
+                ) * self.target_center_y + self.center_bias * (HEIGHT / 2 + noise)
 
         # Move towards target with limited speed
         dy = self.target_center_y - self.paddle.rect.centery
@@ -192,7 +194,9 @@ def draw_center_net(surface: pygame.Surface) -> None:
     x = WIDTH // 2 - 2
     y = 0
     while y < HEIGHT:
-        pygame.draw.rect(surface, GREY, pygame.Rect(x, y, 4, segment_height), border_radius=2)
+        pygame.draw.rect(
+            surface, GREY, pygame.Rect(x, y, 4, segment_height), border_radius=2
+        )
         y += segment_height + gap
 
 
@@ -211,22 +215,39 @@ def main() -> None:
 
     # Entities
     left_paddle = Paddle(
-        rect=pygame.Rect(32, HEIGHT // 2 - PADDLE_HEIGHT // 2, PADDLE_WIDTH, PADDLE_HEIGHT),
+        rect=pygame.Rect(
+            32, HEIGHT // 2 - PADDLE_HEIGHT // 2, PADDLE_WIDTH, PADDLE_HEIGHT
+        ),
         speed=PADDLE_SPEED,
     )
     right_paddle = Paddle(
-        rect=pygame.Rect(WIDTH - 32 - PADDLE_WIDTH, HEIGHT // 2 - PADDLE_HEIGHT // 2, PADDLE_WIDTH, PADDLE_HEIGHT),
+        rect=pygame.Rect(
+            WIDTH - 32 - PADDLE_WIDTH,
+            HEIGHT // 2 - PADDLE_HEIGHT // 2,
+            PADDLE_WIDTH,
+            PADDLE_HEIGHT,
+        ),
         speed=AI_PADDLE_SPEED,
     )
 
-    ball = Ball(pygame.Rect(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2 - BALL_SIZE // 2, BALL_SIZE, BALL_SIZE), BALL_SPEED_INITIAL)
+    ball = Ball(
+        pygame.Rect(
+            WIDTH // 2 - BALL_SIZE // 2,
+            HEIGHT // 2 - BALL_SIZE // 2,
+            BALL_SIZE,
+            BALL_SIZE,
+        ),
+        BALL_SPEED_INITIAL,
+    )
 
     ai = AIPaddleController(right_paddle, ball)
 
     # Game loop
     running = True
     while running:
-        dt = clock.tick(FPS)  # milliseconds per frame, not used for now (frame-based speeds)
+        dt = clock.tick(
+            FPS
+        )  # milliseconds per frame, not used for now (frame-based speeds)
 
         # Events
         for event in pygame.event.get():
@@ -272,7 +293,10 @@ def main() -> None:
         ]
         for i, line in enumerate(info_lines):
             surf = info_font.render(line, True, GREY)
-            screen.blit(surf, (20, HEIGHT - 20 - (len(info_lines) - 1 - i) * (INFO_FONT_SIZE + 4)))
+            screen.blit(
+                surf,
+                (20, HEIGHT - 20 - (len(info_lines) - 1 - i) * (INFO_FONT_SIZE + 4)),
+            )
 
         pygame.display.flip()
 
